@@ -1,0 +1,263 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      list-style: 1.5;
+      padding: 0;
+      margin: 0;
+      background-color: #f4f4f4;
+}
+
+/* global */
+.container{
+      width: 80%;
+      margin: auto;
+      overflow: auto;
+}
+
+ul{
+      margin: 0;
+      padding: 0;
+}
+
+.dark{
+      padding: 15px;
+      background: #35424a;
+      color: #ffffff;
+      margin-top: 10px;
+      margin-bottom: 10px;
+}
+
+/* header 35424a*/
+header{
+      background: #35424a;
+      color: #ffffff;
+      padding-top: 30px;
+      min-height: 70px;
+      border-bottom: #00FFFF 3px solid;
+}
+
+header a{
+      color: #ffffff;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 16px;
+      
+}
+
+header ul {
+      margin: 0;
+      padding: 0;
+}
+
+header li{
+      float: left;
+      display: inline;
+      padding: 0 20px 0 20px;
+}
+
+header #brand{
+      float: left;
+}
+
+header #brand h1{
+      margin: 0;
+}
+
+/* controls the nav bar spacing */
+header nav{
+      float: right;
+      margin-top: 12px;
+}
+
+header .highlight, header .current a{
+      color: #00FFFF;
+      font-weight:bold;
+}
+
+header a:hover{
+      color: #ADD8E6;
+      font-weight: bold;
+}
+
+/* Skills */
+#skills{
+      margin-top: 20px;
+}
+
+#skills .skill{
+      float:left;
+      text-align: center;
+      width: 30%;
+      padding: 10px;
+}
+
+#skills .skill img{
+      width: 90px;
+}
+
+/* sidebar */
+aside#sidebar{
+      float:right;
+      width: 30%;
+      margin-top: 10px;
+}
+
+/* main col */
+article#main-col{
+      float: left;
+      width: 65%;
+}
+
+/* login/register page stuff */
+.loginSection{
+      width: 80%;
+      background: #000;
+      color: #fff;
+      margin: auto;
+      padding: 70px 30px;
+      text-align: center;
+      overflow: auto;
+}
+
+.loginSection p{
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+      font-size: 20px;
+}
+
+.loginSection input{
+      width: 100%;
+}
+
+.loginSection input[type="text"], input[type="password"], input[type="email"]{
+      border: none;
+      border-bottom: 1px solid #fff;
+      background: transparent;
+      outline: none;
+      height: 40px;
+      color: #fff;
+}
+
+.form-group input[type="text"], input[type="password"], input[type="email"]{
+      border: none;
+      border-bottom: 1px solid #fff;
+      background: transparent;
+      outline: none;
+      height: 40px;
+      color: #fff;
+      margin-bottom: 20px;
+}
+
+.loginSection input[type="submit"]{
+      border: none;
+      outline: none;
+      height: 40px;
+      background: #fb2525;
+      color: #fff;
+      font-size: 20px;
+      border-radius: 8px;
+}
+
+.loginSection input[type=submit]:hover{
+      cursor: pointer;
+      background: #ffc107;
+      color: #000;
+}
+
+.loginSection a{
+      text-decoration: none;
+      font-size: 20px;
+      line-height: 40px;
+      color: darkgrey;
+}
+
+.loginSection a:hover{
+      color: #ffc107;
+}
+
+#loginPage h1{
+      margin: 0;
+      padding: 0 0 20px;
+      text-align: center;
+      font-size: 24px;
+}
+
+/* Formatting search box */
+.search-box {
+      width: 300px;
+      position: relative;
+      display: inline-block;
+      font-size: 14px;
+}
+
+.search-box input[type="text"] {
+      height: 32px;
+      padding: 5px 10px;
+      border: 1px solid #CCCCCC;
+      font-size: 14px;
+}
+
+.result{
+      position: absolute;
+      z-index: 999;
+      top: 100%;
+      left: 0;
+}
+
+.search-box input[type="text"], .result{
+      width: 100%;
+      box-sizing: border-box;
+}
+
+/* Formatting result items */
+.result p{
+      margin: 0;
+      padding: 7px 10px;
+      border: 1px solid #CCCCCC;
+      border-top: none;
+      cursor: pointer;
+}
+
+.result p:hover{
+      background: #f2f2f2;
+}
+
+
+
+
+footer{
+      width: 100%;
+      padding: 20px;
+      color:#ffffff;
+      background-color: #35424a;
+      text-align: center;
+}
+
+/*   Media Queries
+      Makes sure website is responsive 768px
+*/
+@media(max-width: 768px){
+      header #brand,
+      header nav,
+      header nav li,
+      #skills .skill,
+      article#main-col,
+      aside#sidebar{
+            float: none;
+            text-align: center;
+            width: 100%
+      }
+
+      header {
+            padding-bottom: 20px;
+      }
+
+}

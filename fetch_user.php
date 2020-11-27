@@ -5,7 +5,7 @@ include('database_conn.php');
 // make sure connected to database
 session_start();
 
-// can be changed to load contacts instead of all users
+// selects all users that arent the current logged in one, and makes a table out of them
 $sql = "SELECT * FROM register WHERE user_id != ' ".$_SESSION['user_id']." ' ";
 
 $stmt = $conn->prepare($sql);

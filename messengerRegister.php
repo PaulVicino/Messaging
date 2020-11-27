@@ -1,8 +1,6 @@
 <?php
 
-// variables
-
-
+// error messages
 $FName_error = "";
 $LName_error = "";
 $email_error = "";
@@ -15,6 +13,7 @@ include('database_conn.php');
 
 session_start();
 
+// checks if user is already logged in
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 	header("location: contacts.php");
 	exit;
@@ -22,6 +21,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
 if (isset($_POST["register"]))
 {
+	// cleans up user input to protect against vulnerabilities
       $FName = trim($_POST['FName']);
       $LName = trim($_POST['LName']);
       $email = trim($_POST['email']);
@@ -36,6 +36,7 @@ if (isset($_POST["register"]))
             ':username' => $userName
       );
 
+	// checks user input for errors
       if ($stmt->execute($data))
       {
             if (strlen(trim($_POST["FName"])) > 20 )
@@ -103,6 +104,7 @@ if (isset($_POST["register"]))
                         }
                   }
 
+			// if user input is error free, we upload the data into database and send them to the login page
                   if (empty($FName_error) && empty($LName_error) && empty($email_error) && empty($userName_error) && empty($password_error) && empty($Cpassword_error))
                   {
                         $data = array(
@@ -124,127 +126,6 @@ if (isset($_POST["register"]))
             }
       }
 }
-
-/*
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-      if (strlen(trim($_POST["FName"])) > 20 )
-      {
-            $FName_error = "First Name must be less than 20 characters";
-      }
-
-      if (strlen(trim($_POST["LName"])) > 20 )
-      {
-            $LName_error = "Last Name must be less than 20 characters";
-      }
-
-      // validate email
-      if (empty(trim($_POST["email"])))
-      {
-            $email_error = "Enter an Email";
-      }
-      else
-      {
-            $sql = "SELECT email FROM register WHERE email = ?";
-
-            if ($stmt = $conn->prepare($sql)) {
-                  $stmt->bind_param("s", $param_email);
-                  $param_email = trim($_POST["email"]);
-
-                  if ($stmt->execute()) {
-                        $stmt->store_result();
-
-                        if ($stmt->num_rows == 1) {
-                              $email_error = "Email is taken";
-                        } else {
-                              $email = trim($_POST["email"]);
-                        }
-                  } else {
-                        echo "Unknown Error. Try again later1";
-                  }
-
-                  $stmt->close();
-            }
-      }
-
-      // validate username
-      if (empty(trim($_POST["username"])))
-      {
-            $userName_error = "Enter a Username";
-      }
-      else
-      {
-            $sql2 = "SELECT UserName FROM register WHERE UserName = ?";
-
-            if ($stmt = $conn->prepare($sql2)){
-                  $stmt->bind_param("s", $param_username);
-                  $param_username = trim($_POST["username"]);
-
-                  if ($stmt->execute()) {
-                        $stmt->store_result();
-
-                        if ($stmt->num_rows == 1) {
-                              $userName_error = "Username is taken";
-                        } else {
-                              $userName = trim($_POST["username"]);
-                        }
-                  } else {
-                        echo "Unknown Error. Try again later2";
-                  }
-
-                  $stmt->close();
-            }
-      }
-
-      // validate password
-      if (empty(trim($_POST["password"]))) {
-            $password_error = "Enter a password";
-      } elseif (strlen(trim($_POST["password"])) < 8) {
-            $password_error = "Password must be at least 8 characters";
-      } elseif (strlen(trim($_POST["password"])) > 20) {
-            $password_error = "Password can be no longer than 20 characters";
-      } else {
-            $password = trim($_POST["password"]);
-      }
-
-      // validate password confirmation
-      if (empty(trim($_POST["Cpassword"]))) {
-            $Cpassword_error = "Please confirm password";
-      }
-      else {
-            $Cpassword = trim($_POST["Cpassword"]);
-            if (empty($password_error) && ($password != $Cpassword)) {
-                  $Cpassword_error = "Passwords do not match";
-            }
-      }
-
-      if (empty($FName_error) && empty($LName_error) && empty($email_error) && empty($userName_error) && empty($password_error) && empty($Cpassword_error)) {
-
-            $sql = "INSERT INTO register (FirstName, LastName, email, userName, password) values (?, ?, ?, ?, ?)";
-
-            if ($stmt = $conn->prepare($sql)) {
-
-                  $stmt -> bind_param("sssss", $param_fname, $param_lname, $param_email, $param_username, $param_password);
-
-                  $param_fname = $FName;
-                  $param_lname = $LName;
-                  $param_email = $email;
-                  $param_username = $userName;
-                  $param_password = password_hash($password, PASSWORD_DEFAULT);
-
-                  if ($stmt->execute()) {
-                        header("location: messengerLogin.php");
-                  } else {
-                        echo "Unknown Error. Try again later3";
-                  }
-
-                  $stmt->close();
-            }
-      }
-
-      $conn->close();
-}
-*/
 
 ?>
 

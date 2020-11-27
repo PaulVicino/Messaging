@@ -1,14 +1,15 @@
 <?php
 
+// connects to the mysql database
+
 $host = "localhost";
 $dbUsername = "root";
 $dbPassword = "";
 $dbName = "messaging_systems";
 
-// $conn = new mysqli($host, $dbUsername, $dbPassword, $dbName);
-
 $conn = new PDO("mysql:host=localhost;dbname=messaging_systems", "root", "");
 
+// sets timezone to EST for chat log history purposes
 date_default_timezone_set('America/New_York');
 
 function fetch_user_last_activity($user_id, $conn)

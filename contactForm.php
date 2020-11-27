@@ -10,6 +10,8 @@ $data = array(
       ':message' => $_POST['message']
 );
 
+// updates the mysql message database every time a message is sent
+
 $sql = "INSERT INTO message (message, from_user_id, to_user_id) VALUES (:message, :from_user_id, :to_user_id)";
 
 $stmt = $conn->prepare($sql);

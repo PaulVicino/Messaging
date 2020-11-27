@@ -1,11 +1,12 @@
 <?php
 
+// make sure connected to database
 include('database_conn.php');
 
-// make sure connected to database
-
+// start session to allow us to user all session variables
 session_start();
 
+// check to make sure user credentials are valid through session variables
 if (!isset($_SESSION['username']))
 {
 	header("location:messengerLogin.php");
@@ -26,6 +27,7 @@ if (!isset($_SESSION['username']))
 	<title>Contacts Page</title>
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- bootstrap responsible for header scrollbar -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
       <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -49,6 +51,7 @@ if (!isset($_SESSION['username']))
 		</div>
 	</header>
 
+<!-- creates the contact table and search bar-->
       <section id = contacts>
 		<div class="loginSection">
 			<p align="right">User: <?php echo $_SESSION['username']; ?> <a href="logout.php">Logout</a></p>
@@ -62,20 +65,25 @@ if (!isset($_SESSION['username']))
 					<div id ="user_model_details"></div>
 				</div>
 
-				<!--
+
 				<div class="search-box">
 		                  <input type="text" autocomplete="off" placeholder="Search users..." name = "user">
 		                  <div class = "result"></div>
 		            </div>
-			-->
+
 		</div>
 
       </section>
+
+	<footer>
+		<p>Paul Vicino CS Projects, Copyright nonexistant lol</p>
+	</footer>
 
 </body>
 </html>
 
 <script type="text/javascript">
+// refreshes information every second
 $(document).ready(function(){
 
 	fetch_user();
@@ -84,8 +92,9 @@ $(document).ready(function(){
 		update_last_activity();
 		fetch_user();
             update_chat_history_data();
-	}, 5000);
+	}, 1000);
 
+	// creates a contact box for each user
 	function fetch_user()
 	{
 		$.ajax({
@@ -97,6 +106,7 @@ $(document).ready(function(){
 		})
 	}
 
+	// is used for chat message logs
 	function update_last_activity()
 	{
 		$.ajax({
@@ -108,6 +118,7 @@ $(document).ready(function(){
 		})
 	}
 
+	// creates a box up dialog box when you want to chat with someone
 	function make_chat_dialog_box(to_user_id, to_user_name)
 	{
 		 var modal_content = '<div id="user_dialog_'+to_user_id+'" class="user_dialog" title="Message'+to_user_name+'">';
@@ -121,17 +132,19 @@ $(document).ready(function(){
 		 $('#user_model_details').html(modal_content);
 	 }
 
+	 // creates the dialog box when you click the message button
 	$(document).on('click', '.start_chat', function(){
 		var to_user_id = $(this).data('touserid');
 		var to_user_name = $(this).data('tousername');
 		make_chat_dialog_box(to_user_id, to_user_name);
 		$("#user_dialog_"+to_user_id).dialog({
 			autoOpen:false,
-			width:400
+			width: 350
 		});
 		$('#user_dialog_'+to_user_id).dialog('open');
 	});
 
+	// sends the message when you click the send button
 	$(document).on('click', '.send_chat', function(){
 		var to_user_id = $(this).attr('id');
 		var message = $('#message_'+to_user_id).val();
@@ -146,6 +159,7 @@ $(document).ready(function(){
 		})
 	});
 
+	// finds the chat history between you and another user when a dialog box is created
       function fetch_user_chat_history(to_user_id)
       {
             $.ajax({
@@ -171,4 +185,28 @@ $(document).ready(function(){
       });
 
 });
+
+// makes the search bar + updates the searches based on each new keystroke
+$(document).ready(function(){
+    $('.search-box input[type="text"]').on("keyup input", function(){
+        /* Get input value on change */
+        var inputVal = $(this).val();
+        var resultDropdown = $(this).siblings(".result");
+        if(inputVal.length){
+            $.get("search.php", {term: inputVal}).done(function(data){
+                // Display the returned data in browser
+                resultDropdown.html(data);
+            });
+        } else{
+            resultDropdown.empty();
+        }
+    });
+
+    // Set search input value on click of result item
+    $(document).on("click", ".result p", function(){
+        $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
+        $(this).parent(".result").empty();
+    });
+});
+
 </script>

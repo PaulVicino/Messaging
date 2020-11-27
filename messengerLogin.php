@@ -2,14 +2,17 @@
 
 session_start();
 
+// checks if user if already logged in
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 	header("location: contacts.php");
 	exit;
 }
 
+// variables
 $userName = "";
 $password = "";
 
+// error messages
 $userName_error  = "";
 $password_error = "";
 
@@ -32,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$password = trim($_POST["password"]);
 	}
 
+	// checks for errors in user input
 	if (empty($userName_error) && empty($password_error)) {
 
 		$sql = "SELECT * FROM register WHERE UserName = :username";
@@ -49,8 +53,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$result = $stmt->fetchAll();
 			foreach ($result as $row)
 			{
+				// checks if encrypted password in database matches user input
 				if (password_verify($password, $row['Password']))
 				{
+					// loads session variables and changes database info
 					$_SESSION['user_id'] = $row['user_id'];
 					$_SESSION['username'] = $row['UserName'];
 					$sub_sql = "INSERT INTO login_activity (user_id) VALUES ('".$row['user_id']."')";
@@ -69,45 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		{
 			$userName_error = "Username does not exist";
 		}
-/*
-		if ($stmt = $conn->prepare($sql)) {
-			$stmt->bind_param("s", $param_username);
-			$param_username = $userName;
-
-			if ($stmt->execute()) {
-				$stmt->store_result();
-
-				if ($stmt->num_rows == 1) {
-					$stmt->bind_result($userName, $hashed_password);
-
-					if ($stmt->fetch()) {
-						if (password_verify($password, $hashed_password)) {
-							session_start();
-
-							$_SESSION['loggedin'] = true;
-							$_SESSION['user_id'] = $row['id'];
-							$_SESSION['username'] = $param_username;
-
-							$sub_sql = "INSERT INTO login_activity (id) VALUES (' ".$row['id']. " ')";
-							$stmt = $conn->prepare($sub_sql);
-							$stmt->execute();
-							$_SESSION['login_details_id'] = $conn->lastInsertId();
-
-							header("location: contacts.php");
-						} else {
-							$password_error = "Incorrect Password";
-						}
-					}
-				} else {
-					$userName_error = "Username does not exist";
-				}
-			} else {
-				echo "Unknown Error. Try again later4";
-			}
-
-			$stmt->close();
-		}
-		*/
 	}
 }
 

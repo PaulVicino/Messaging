@@ -121,13 +121,18 @@ $(document).ready(function(){
 	// creates a box up dialog box when you want to chat with someone
 	function make_chat_dialog_box(to_user_id, to_user_name)
 	{
+		// titles the div with the name of the person youre messaging
 		 var chat_box = '<div id="user_dialog_'+to_user_id+'" class="user_dialog" title="Message'+to_user_name+'">';
+		 // makes another div that will hold your chat history
 		 chat_box += '<div style="height:350px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:22px; padding:14px;" class="chat_history" data-touserid="'+to_user_id+'" id="chat_history_'+to_user_id+'">';
+		 // loads your chat history
 		 chat_box += fetch_user_chat_history(to_user_id);
+		 // closes chat history div
 		 chat_box += '</div>';
-		 chat_box += '<div class="form-group">';
-		 chat_box += '<textarea name="message_'+to_user_id+'" id="message_'+to_user_id+'" class="form-control"></textarea>';
-		 chat_box += '</div><div class="form-group" align="right">';
+		 // makes new div for you to type your message
+		 chat_box += '<div class="form-group"><textarea name="message_'+to_user_id+'" id="message_'+to_user_id+'" class="form-control"></textarea></div>';
+		 chat_box += '<div class="form-group" align="right">';
+		 // div for the send button
 		 chat_box += '<button type="button" name="send_chat" id="'+to_user_id+'" class="btn btn-info send_chat">Send</button></div></div>';
 		 $('#user_model_details').html(chat_box);
 	 }

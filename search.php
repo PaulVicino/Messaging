@@ -14,6 +14,7 @@ if($connn === false){
     die("Connection Error" . $connn->connect_error);
 }
 
+// is pinged every time user inputs a new keystroke, searches database for any matches
 if(isset($_REQUEST["search"])){
     $sql = "SELECT * FROM register WHERE UserName LIKE ?";
 
@@ -32,7 +33,7 @@ if(isset($_REQUEST["search"])){
             } else{
                 echo "<p>No matches found</p>";
             }
-        } 
+        }
     }
     $stmt->close();
 }

@@ -21,6 +21,7 @@ $output = '
       </tr>
 ';
 
+// for loop that injects html code into the table above
 foreach($result as $row)
 {
       $current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');

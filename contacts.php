@@ -111,7 +111,7 @@ $(document).ready(function(){
 	{
 		$.ajax({
 			url: "update_activity.php",
-			sucess:function()
+			success:function()
 			{
 
 			}
@@ -121,53 +121,53 @@ $(document).ready(function(){
 	// creates a box up dialog box when you want to chat with someone
 	function make_chat_dialog_box(to_user_id, to_user_name)
 	{
-		 var modal_content = '<div id="user_dialog_'+to_user_id+'" class="user_dialog" title="Message'+to_user_name+'">';
-		 modal_content += '<div style="height:400px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;" class="chat_history" data-touserid="'+to_user_id+'" id="chat_history_'+to_user_id+'">';
-		 modal_content += fetch_user_chat_history(to_user_id);
-		 modal_content += '</div>';
-		 modal_content += '<div class="form-group">';
-		 modal_content += '<textarea name="message_'+to_user_id+'" id="message_'+to_user_id+'" class="form-control"></textarea>';
-		 modal_content += '</div><div class="form-group" align="right">';
-		 modal_content += '<button type="button" name="send_chat" id="'+to_user_id+'" class="btn btn-info send_chat">Send</button></div></div>';
-		 $('#user_model_details').html(modal_content);
+		 var chat_box = '<div id="user_dialog_'+to_user_id+'" class="user_dialog" title="Message'+to_user_name+'">';
+		 chat_box += '<div style="height:350px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:22px; padding:14px;" class="chat_history" data-touserid="'+to_user_id+'" id="chat_history_'+to_user_id+'">';
+		 chat_box += fetch_user_chat_history(to_user_id);
+		 chat_box += '</div>';
+		 chat_box += '<div class="form-group">';
+		 chat_box += '<textarea name="message_'+to_user_id+'" id="message_'+to_user_id+'" class="form-control"></textarea>';
+		 chat_box += '</div><div class="form-group" align="right">';
+		 chat_box += '<button type="button" name="send_chat" id="'+to_user_id+'" class="btn btn-info send_chat">Send</button></div></div>';
+		 $('#user_model_details').html(chat_box);
 	 }
 
 	 // creates the dialog box when you click the message button
 	$(document).on('click', '.start_chat', function(){
-		var to_user_id = $(this).data('touserid');
-		var to_user_name = $(this).data('tousername');
-		make_chat_dialog_box(to_user_id, to_user_name);
-		$("#user_dialog_"+to_user_id).dialog({
+		var reciever_id = $(this).data('touserid');
+		var reciever_name = $(this).data('tousername');
+		make_chat_dialog_box(reciever_id, reciever_name);
+		$("#user_dialog_"+reciever_id).dialog({
 			autoOpen:false,
 			width: 350
 		});
-		$('#user_dialog_'+to_user_id).dialog('open');
+		$('#user_dialog_'+reciever_id).dialog('open');
 	});
 
 	// sends the message when you click the send button
 	$(document).on('click', '.send_chat', function(){
-		var to_user_id = $(this).attr('id');
-		var message = $('#message_'+to_user_id).val();
+		var reciever_id = $(this).attr('id');
+		var message = $('#message_'+reciever_id).val();
 		$.ajax({
 			url: "contactForm.php",
 			method:"POST",
-			data:{to_user_id:to_user_id, message:message},
+			data:{reciever_id:reciever_id, message:message},
 			success:function(data){
-				$('#message_'+to_user_id).val(' ');
-				$('#chat_history_'+to_user_id).html(data);
+				$('#message_'+reciever_id).val(' ');
+				$('#chat_history_'+reciever_id).html(data);
 			}
 		})
 	});
 
 	// finds the chat history between you and another user when a dialog box is created
-      function fetch_user_chat_history(to_user_id)
+      function fetch_user_chat_history(reciever_id)
       {
             $.ajax({
                   url: "fetch_user_chat_history.php",
                   method:"POST",
-                  data:{to_user_id:to_user_id},
+                  data:{reciever_id:reciever_id},
                   success:function(data){
-                        $('#chat_history_'+to_user_id).html(data);
+                        $('#chat_history_'+reciever_id).html(data);
                   }
             })
       }
@@ -175,8 +175,8 @@ $(document).ready(function(){
       function update_chat_history_data()
       {
             $('.chat_history').each(function(){
-                  var to_user_id = $(this).data('touserid');
-                  fetch_user_chat_history(to_user_id);
+                  var reciever_id = $(this).data('touserid');
+                  fetch_user_chat_history(reciver_id);
             });
       }
 
@@ -189,23 +189,16 @@ $(document).ready(function(){
 // makes the search bar + updates the searches based on each new keystroke
 $(document).ready(function(){
     $('.search-box input[type="text"]').on("keyup input", function(){
-        /* Get input value on change */
-        var inputVal = $(this).val();
-        var resultDropdown = $(this).siblings(".result");
-        if(inputVal.length){
-            $.get("search.php", {term: inputVal}).done(function(data){
-                // Display the returned data in browser
-                resultDropdown.html(data);
+        // create search results
+        var search = $(this).val();
+        var results = $(this).siblings(".result");
+        if(search.length){
+            $.get("search.php", {search:search}).done(function(data){
+                results.html(data);
             });
         } else{
-            resultDropdown.empty();
+            results.empty();
         }
-    });
-
-    // Set search input value on click of result item
-    $(document).on("click", ".result p", function(){
-        $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
-        $(this).parent(".result").empty();
     });
 });
 
